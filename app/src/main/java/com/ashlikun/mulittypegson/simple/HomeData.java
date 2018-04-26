@@ -1,8 +1,11 @@
 package com.ashlikun.mulittypegson.simple;
 
 import com.ashlikun.mulittypegson.BaseMultiData;
-import com.ashlikun.mulittypegson.BaseMultiUpperLeveData;
+import com.ashlikun.mulittypegson.BaseMultiParentData;
+import com.ashlikun.mulittypegson.MultiTypeGsonBuilder;
+import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -45,7 +48,7 @@ public class HomeData {
         public JumpBean jump;
     }
 
-    public static class DataListBean implements BaseMultiUpperLeveData {
+    public static class DataListBean implements BaseMultiParentData {
         public String type;
         public String size;
         public int top;
@@ -153,5 +156,25 @@ public class HomeData {
         public String maidian;
         public String good_rate;
         public String act_image;
+    }
+
+    public <T> T parse(String json, Type type) {
+        GsonBuilder builder = new MultiTypeGsonBuilder()
+                //指定要解析的字段名称
+                .registerTypeElementName("type")
+                //是否强制把外层的type字段的值设置给内部
+                .forceUseParentValue()
+                //注册外部解析类
+                .registerTargetParentClass(DataListBean.class)
+                //注册内部对应type解析类
+                .registerTypeElementClass("top_banner", TopBannerData.class)
+                .registerTypeElementClass("act_banner", ActBanner.class)
+                .registerTypeElementClass("top_icons", TopIcons.class)
+                .registerTypeElementClass("article", Article.class)
+                .registerTypeElementClass("subject_area", SubjectArea.class)
+                .registerTypeElementClass("recgoods", Recgoods.class)
+                .registerTypeElementClass("baseInfo", HomeData.BaseInfo.class)
+                .build();
+        return builder.create().fromJson(json, type);
     }
 }

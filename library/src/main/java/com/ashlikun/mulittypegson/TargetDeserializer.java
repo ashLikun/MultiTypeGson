@@ -19,14 +19,14 @@ import java.lang.reflect.Type;
 public class TargetDeserializer implements JsonDeserializer {
     private final MultiTypeGsonBuilder multiTypeGsonBuilder;
     //上一级的type对应的value
-    private String upperLeveElementValue;
+    private String parentElementValue;
 
     protected TargetDeserializer(MultiTypeGsonBuilder multiTypeGsonBuilder) {
         this.multiTypeGsonBuilder = multiTypeGsonBuilder;
     }
 
-    public void setUpperLeveElementValue(String upperLeveElementValue) {
-        this.upperLeveElementValue = upperLeveElementValue;
+    public void setParentElementValue(String parentElementValue) {
+        this.parentElementValue = parentElementValue;
     }
 
     @Override
@@ -43,8 +43,8 @@ public class TargetDeserializer implements JsonDeserializer {
         String contentType = null;
 
         //如果强制使用上一层级的value  或者当前类型没有找到type:""形式
-        if (multiTypeGsonBuilder.forceUseUpperTypeValue || jsonElement == null) {
-            contentType = upperLeveElementValue;
+        if (multiTypeGsonBuilder.forceUseParentValue || jsonElement == null) {
+            contentType = parentElementValue;
         } else if (jsonElement != null) {
             //jsonObject已经包含了"type":""的形式
             contentType = multiTypeGsonBuilder.getString(jsonElement);

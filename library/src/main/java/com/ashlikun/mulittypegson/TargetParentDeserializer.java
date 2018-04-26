@@ -14,12 +14,12 @@ import java.lang.reflect.Type;
  * 创建时间: 2018/4/24 0024　下午 2:11
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：解析外部type字段的adapter,会先解析这一个层级的数据
+ * 功能介绍：反序列化外部type字段的adapter,会先解析这一个层级的数据
  * 由外到内
  */
-public class TargetUpperLevelDeserializer implements JsonDeserializer<Object> {
+public class TargetParentDeserializer implements JsonDeserializer<Object> {
 
-    //新建一个Gson,不再对AdaptedUpperLevelClass进行注册
+    //新建一个Gson,不再对AdaptedParentClass进行注册
     private Gson gson;
     //不同类型的解析器，这里要给他指定类型
     private TargetDeserializer targetDeserializer;
@@ -27,11 +27,11 @@ public class TargetUpperLevelDeserializer implements JsonDeserializer<Object> {
     /**
      * 包含type类的类型
      */
-    protected Type targetUpperLevelClass;
+    protected Type targetParentClass;
 
-    protected TargetUpperLevelDeserializer(MultiTypeGsonBuilder multiTypeGsonBuilder, Type targetUpperLevelClass, TargetDeserializer targetDeserializer) {
+    protected TargetParentDeserializer(MultiTypeGsonBuilder multiTypeGsonBuilder, Type targetParentClass, TargetDeserializer targetDeserializer) {
         this.targetDeserializer = targetDeserializer;
-        this.targetUpperLevelClass = targetUpperLevelClass;
+        this.targetParentClass = targetParentClass;
         this.multiTypeGsonBuilder = multiTypeGsonBuilder;
         gson = multiTypeGsonBuilder.buildTager().create();
     }
@@ -45,10 +45,10 @@ public class TargetUpperLevelDeserializer implements JsonDeserializer<Object> {
         if (jsonObject.has(multiTypeGsonBuilder.typeElementName)) {
             //如果包含type字段，就把对应的value传递给下一层级
             typeValue = multiTypeGsonBuilder.getString(jsonObject.get(multiTypeGsonBuilder.typeElementName));
-            targetDeserializer.setUpperLeveElementValue(typeValue);
+            targetDeserializer.setParentElementValue(typeValue);
         }
-        Object item = gson.fromJson(json, targetUpperLevelClass);
-        onTargetUpperItemDeserialize(item, typeValue);
+        Object item = gson.fromJson(json, targetParentClass);
+        onTargetParentItemDeserialize(item, typeValue);
         return item;
     }
 
@@ -59,7 +59,7 @@ public class TargetUpperLevelDeserializer implements JsonDeserializer<Object> {
      * @param item
      * @param typeElementValue
      */
-    protected void onTargetUpperItemDeserialize(Object item, String typeElementValue) {
+    protected void onTargetParentItemDeserialize(Object item, String typeElementValue) {
 
     }
 }

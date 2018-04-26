@@ -6,14 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.ashlikun.mulittypegson.MultiTypeGsonBuilder;
-import com.ashlikun.mulittypegson.simple.HomeData.*;
-import com.google.gson.GsonBuilder;
+import com.ashlikun.mulittypegson.simple.HomeData.TopBannerData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     String json;
@@ -43,24 +42,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onButtonClick(View view) {
-        GsonBuilder builder = new MultiTypeGsonBuilder()
-                //指定要解析的字段名称
-                .registerTypeElementName("type")
-                //是否强制把外层的type字段的值设置给内部
-                .forceUseUpperTypeValue()
-                //注册外部解析类
-                .registerTargetUpperLevelClass(DataListBean.class)
-                //注册内部对应type解析类
-                .registerTypeElementClass("top_banner", TopBannerData.class)
-                .registerTypeElementClass("act_banner", ActBanner.class)
-                .registerTypeElementClass("top_icons", TopIcons.class)
-                .registerTypeElementClass("article", Article.class)
-                .registerTypeElementClass("subject_area", SubjectArea.class)
-                .registerTypeElementClass("recgoods", Recgoods.class)
-                .registerTypeElementClass("baseInfo", HomeData.BaseInfo.class)
-                .build();
-        HomeData data = builder.create().fromJson(json, HomeData.class);
-        TopBannerData data1 = data.dataList.get(0).getObjectData();
+
+        HomeData data = new HomeData().parse(json, HomeData.class);
+        List<TopBannerData> data1 = data.dataList.get(0).getArrayData();
+
         Log.e("aaa", "");
     }
 //    private String json = "{\n" +

@@ -27,9 +27,9 @@ dependencies {
                     //指定要解析的字段名称
                     .registerTypeElementName("type")
                     //是否强制把外层的type字段的值设置给内部
-                    .forceUseUpperTypeValue()
+                    .forceUseParentValue()
                     //注册外部解析类
-                    .registerTargetUpperLevelClass(DataListBean.class)
+                    .registerTargetParentClass(DataListBean.class)
                     //注册内部对应type解析类
                     .registerTypeElementClass("AAA_type", TopBannerData.class)
                     .registerTypeElementClass("BBB_type", HomeData.BaseInfo.class)

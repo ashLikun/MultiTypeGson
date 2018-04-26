@@ -18,7 +18,7 @@ public class MultiTypeGsonBuilder {
     protected HashMap<String, Type> typeClassMap = new HashMap<>();
     private TargetDeserializer typeAdapter;
     protected String typeElementName;
-    private Type targetUpperLevelClass;
+    private Type targetParentClass;
     private Class targetClass;
     /**
      * 内部解析json
@@ -27,7 +27,7 @@ public class MultiTypeGsonBuilder {
     /**
      * 是否强制使用目标类上一层的type对应的value，因为存在目标类和上一层type对应的value不同
      */
-    protected boolean forceUseUpperTypeValue;
+    protected boolean forceUseParentValue;
 
     public MultiTypeGsonBuilder() {
     }
@@ -60,8 +60,8 @@ public class MultiTypeGsonBuilder {
      * 注册包裹在被转换的类的上一层的类
      * 默认为 {@link BaseMultiData}
      */
-    public MultiTypeGsonBuilder registerTargetUpperLevelClass(Type targetUpperLevelClass) {
-        this.targetUpperLevelClass = targetUpperLevelClass;
+    public MultiTypeGsonBuilder registerTargetParentClass(Type targetParentClass) {
+        this.targetParentClass = targetParentClass;
         return this;
     }
 
@@ -69,8 +69,8 @@ public class MultiTypeGsonBuilder {
      * 是否强制把外层的type字段的值设置给内部
      * 有的时候上一级和目标级都有这个{@link #typeElementName}字段
      */
-    public MultiTypeGsonBuilder forceUseUpperTypeValue() {
-        forceUseUpperTypeValue = true;
+    public MultiTypeGsonBuilder forceUseParentValue() {
+        forceUseParentValue = true;
         return this;
     }
 
@@ -95,8 +95,8 @@ public class MultiTypeGsonBuilder {
         buildCheck();
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(targetClass, typeAdapter);
-        if (targetUpperLevelClass != null) {
-            gsonBuilder.registerTypeAdapter(targetUpperLevelClass, new TargetUpperLevelDeserializer(this, targetUpperLevelClass, typeAdapter));
+        if (targetParentClass != null) {
+            gsonBuilder.registerTypeAdapter(targetParentClass, new TargetParentDeserializer(this, targetParentClass, typeAdapter));
         }
         parseGson = gsonBuilder.create();
         return gsonBuilder;

@@ -9,7 +9,7 @@ import java.util.List;
  * <p>
  * 功能介绍：需要动态解析上一级类,实现
  */
-public class ImpBaseMultiUpperLeveData implements BaseMultiUpperLeveData {
+public class ImpBaseMultiParentData implements BaseMultiParentData {
     @Override
     public <T> List<T> getArrayData() {
         return null;

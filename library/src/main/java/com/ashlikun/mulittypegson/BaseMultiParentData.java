@@ -9,7 +9,7 @@ import java.util.List;
  * <p>
  * 功能介绍：需要动态解析上一级类,的抽象
  */
-public interface BaseMultiUpperLeveData {
+public interface BaseMultiParentData {
     /**
      * @author　　: 李坤
      * 创建时间: 2018/4/25 0025 下午 3:36
