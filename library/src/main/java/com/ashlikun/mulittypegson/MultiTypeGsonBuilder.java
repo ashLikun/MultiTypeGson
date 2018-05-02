@@ -50,6 +50,7 @@ public class MultiTypeGsonBuilder {
 
     /**
      * 注册需要需要转换的类，通常这个类是一个父类(公共实现的类)
+     * 默认为 {@link BaseMultiData}
      */
     public MultiTypeGsonBuilder registerTargetClass(Class targetClass) {
         this.targetClass = targetClass;
@@ -58,7 +59,7 @@ public class MultiTypeGsonBuilder {
 
     /**
      * 注册包裹在被转换的类的上一层的类
-     * 默认为 {@link BaseMultiData}
+     * 需要继承{@link BaseMultiParentData}或者{@link ImpBaseMultiParentData}
      */
     public MultiTypeGsonBuilder registerTargetParentClass(Type targetParentClass) {
         this.targetParentClass = targetParentClass;

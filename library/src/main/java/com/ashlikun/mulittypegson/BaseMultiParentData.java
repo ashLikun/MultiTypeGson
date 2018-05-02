@@ -8,6 +8,9 @@ import java.util.List;
  * 邮箱　　：496546144@qq.com
  * <p>
  * 功能介绍：需要动态解析上一级类,的抽象
+ * 可以使用本类的实现类 {@link ImpBaseMultiParentData}
+ * 调用
+ * {@link MultiTypeGsonBuilder#registerTargetParentClass}方法
  */
 public interface BaseMultiParentData {
     /**
