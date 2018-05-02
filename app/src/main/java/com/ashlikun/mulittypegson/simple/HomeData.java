@@ -162,8 +162,6 @@ public class HomeData {
         GsonBuilder builder = new MultiTypeGsonBuilder()
                 //指定要解析的字段名称
                 .registerTypeElementName("type")
-                //是否强制把外层的type字段的值设置给内部
-                .forceUseParentValue()
                 //注册外部解析类
                 .registerTargetParentClass(DataListBean.class)
                 //注册内部对应type解析类

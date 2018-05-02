@@ -27,7 +27,7 @@ public class MultiTypeGsonBuilder {
     /**
      * 是否强制使用目标类上一层的type对应的value，因为存在目标类和上一层type对应的value不同
      */
-    protected boolean forceUseParentValue;
+    protected boolean forceUseParentValue = true;
 
     public MultiTypeGsonBuilder() {
     }
@@ -70,8 +70,8 @@ public class MultiTypeGsonBuilder {
      * 是否强制把外层的type字段的值设置给内部
      * 有的时候上一级和目标级都有这个{@link #typeElementName}字段
      */
-    public MultiTypeGsonBuilder forceUseParentValue() {
-        forceUseParentValue = true;
+    public MultiTypeGsonBuilder noForceUseParentValue() {
+        forceUseParentValue = false;
         return this;
     }
 
