@@ -2,8 +2,7 @@ package com.ashlikun.mulittypegson.simple;
 
 import com.ashlikun.mulittypegson.BaseMultiData;
 import com.ashlikun.mulittypegson.BaseMultiParentData;
-import com.ashlikun.mulittypegson.MultiTypeGsonBuilder;
-import com.google.gson.GsonBuilder;
+import com.ashlikun.mulittypegson.GsonHelper;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -159,7 +158,7 @@ public class HomeData {
     }
 
     public <T> T parse(String json, Type type) {
-        GsonBuilder builder = new MultiTypeGsonBuilder()
+        return GsonHelper.getMultiTypeGsonBuilder()
                 //指定要解析的字段名称
                 .registerTypeElementName("type")
                 //注册外部解析类
@@ -172,7 +171,6 @@ public class HomeData {
                 .registerTypeElementClass("subject_area", SubjectArea.class)
                 .registerTypeElementClass("recgoods", Recgoods.class)
                 .registerTypeElementClass("baseInfo", HomeData.BaseInfo.class)
-                .build();
-        return builder.create().fromJson(json, type);
+                .build().create().fromJson(json, type);
     }
 }

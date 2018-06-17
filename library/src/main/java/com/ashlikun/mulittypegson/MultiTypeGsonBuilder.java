@@ -29,7 +29,7 @@ public class MultiTypeGsonBuilder {
      */
     protected boolean forceUseParentValue = true;
 
-    public MultiTypeGsonBuilder() {
+    protected MultiTypeGsonBuilder() {
     }
 
     /**
@@ -94,7 +94,7 @@ public class MultiTypeGsonBuilder {
      */
     public GsonBuilder build() {
         buildCheck();
-        GsonBuilder gsonBuilder = new GsonBuilder();
+        GsonBuilder gsonBuilder = GsonHelper.getGsonBuilder();
         gsonBuilder.registerTypeAdapter(targetClass, typeAdapter);
         if (targetParentClass != null) {
             gsonBuilder.registerTypeAdapter(targetParentClass, new TargetParentDeserializer(this, targetParentClass, typeAdapter));
@@ -108,9 +108,8 @@ public class MultiTypeGsonBuilder {
      */
     public GsonBuilder buildTager() {
         buildCheck();
-        GsonBuilder builder = new GsonBuilder()
+        return GsonHelper.getGsonBuilder()
                 .registerTypeAdapter(targetClass, typeAdapter);
-        return builder;
     }
 
     protected String getString(JsonElement jsonElement) {
