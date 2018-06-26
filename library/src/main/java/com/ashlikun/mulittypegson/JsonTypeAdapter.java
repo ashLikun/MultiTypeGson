@@ -1,7 +1,5 @@
 package com.ashlikun.mulittypegson;
 
-import android.text.TextUtils;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -41,11 +39,10 @@ public class JsonTypeAdapter {
             if (json == null) {
                 return null;
             }
-            String value = json.getAsJsonPrimitive().getAsString();
-            if (value == null || TextUtils.equals(value.toUpperCase(), "NULL")) {
+            try {
+                return json.getAsJsonPrimitive().getAsString();
+            } catch (Exception e) {
                 return null;
-            } else {
-                return value;
             }
         }
 
