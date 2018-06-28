@@ -31,7 +31,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly 'com.google.code.gson:gson:2.8.2'
+    compileOnly 'com.google.code.gson:gson:2.8.5'
 }
 
 apply from: '../maven.gradle'

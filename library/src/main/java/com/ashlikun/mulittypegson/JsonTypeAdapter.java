@@ -1,10 +1,8 @@
 package com.ashlikun.mulittypegson;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
@@ -112,30 +110,45 @@ public class JsonTypeAdapter {
         }
     }
 
-    public static class JsonArrayAdapter implements JsonDeserializer<JsonArray> {
+    public static class BooleanTypeAdapter implements JsonDeserializer<Boolean> {
         // json转为对象时调用,实现JsonDeserializer<>接口
         @Override
-        public JsonArray deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public Boolean deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             if (json == null || json.getAsJsonPrimitive().isJsonNull()) {
                 return null;
             }
             try {
-                return json.getAsJsonPrimitive().getAsJsonArray();
+                return json.getAsJsonPrimitive().getAsBoolean();
             } catch (Exception e) {
                 return null;
             }
         }
     }
 
-    public static class JsonObjectAdapter implements JsonDeserializer<JsonObject> {
+    public static class JsonArrayAdapter implements JsonDeserializer<Object[]> {
         // json转为对象时调用,实现JsonDeserializer<>接口
         @Override
-        public JsonObject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public Object[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             if (json == null || json.getAsJsonPrimitive().isJsonNull()) {
                 return null;
             }
             try {
-                return json.getAsJsonPrimitive().getAsJsonObject();
+                return context.deserialize(json, typeOfT);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+    }
+
+    public static class JsonObjectAdapter implements JsonDeserializer<Object> {
+        // json转为对象时调用,实现JsonDeserializer<>接口
+        @Override
+        public Object deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json == null || json.getAsJsonPrimitive().isJsonNull()) {
+                return null;
+            }
+            try {
+                return context.deserialize(json, typeOfT);
             } catch (Exception e) {
                 return null;
             }

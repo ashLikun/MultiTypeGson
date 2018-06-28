@@ -6,13 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.ashlikun.mulittypegson.simple.HomeData.TopBannerData;
+import com.ashlikun.mulittypegson.GsonHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     String json;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static String getJson(Context context) {
         StringBuilder sb = new StringBuilder();
         try {
-            InputStream inputStream = context.getAssets().open("home.json");
+            InputStream inputStream = context.getAssets().open("json2.json");
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -42,30 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onButtonClick(View view) {
-
-        HomeData data = new HomeData().parse(json, HomeData.class);
-        List<TopBannerData> data1 = data.dataList.get(0).getArrayData();
-
+        JsonData data = GsonHelper.getGson().fromJson(json, JsonData.class);
         Log.e("aaa", "");
     }
-//    private String json = "{\n" +
-//            "    \"total\": 2,\n" +
-//            "    \"list\": [\n" +
-//            "        {\n" +
-//            "            \"type\": \"address\",\n" +
-//            "            \"attributes\": {\n" +
-//            "                \"street\": \"NanJing Road\",\n" +
-//            "                \"city\": \"ShangHai\",\n" +
-//            "                \"country\": \"China\"\n" +
-//            "            }\n" +
-//            "        },\n" +
-//            "        {\n" +
-//            "            \"type\": \"name\",\n" +
-//            "            \"attributes\": {\n" +
-//            "                \"first-name\": \"Su\",\n" +
-//            "                \"last-name\": \"Tu\"\n" +
-//            "            }\n" +
-//            "        }\n" +
-//            "    ]\n" +
-//            "}";
 }

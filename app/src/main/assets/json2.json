@@ -1,0 +1,27 @@
+{
+  "code": 1,
+  "msg": "\u64cd\u4f5c\u6210\u529f",
+  "types": [
+    {
+      "id": "1",
+      "name": "\u6d4b\u8bd51"
+    },
+    {
+      "id": "2",
+      "name": "\u6d4b\u8bd52"
+    },
+    {
+      "id": "5",
+      "name": "\u6c7d\u8f66"
+    }
+  ],
+  "info": {
+    "id": "5",
+    "name": "\u6c7d\u8f66"
+  },
+  "currentPage": 1,
+  "pageCount": 1,
+  "pageOffset": 15,
+  "currentRows": 1,
+  "list": {}
+}
