@@ -1,5 +1,6 @@
 package com.ashlikun.mulittypegson;
 
+import com.ashlikun.gson.GsonHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -29,7 +30,7 @@ public class MultiTypeGsonBuilder {
      */
     protected boolean forceUseParentValue = true;
 
-    protected MultiTypeGsonBuilder() {
+    public MultiTypeGsonBuilder() {
     }
 
     /**
@@ -94,7 +95,7 @@ public class MultiTypeGsonBuilder {
      */
     public GsonBuilder build() {
         buildCheck();
-        GsonBuilder gsonBuilder = GsonHelper.getGsonBuilder();
+        GsonBuilder gsonBuilder = GsonHelper.getBuilder();
         gsonBuilder.registerTypeAdapter(targetClass, typeAdapter);
         if (targetParentClass != null) {
             gsonBuilder.registerTypeAdapter(targetParentClass, new TargetParentDeserializer(this, targetParentClass, typeAdapter));
@@ -108,7 +109,7 @@ public class MultiTypeGsonBuilder {
      */
     public GsonBuilder buildTager() {
         buildCheck();
-        return GsonHelper.getGsonBuilder()
+        return GsonHelper.getBuilder()
                 .registerTypeAdapter(targetClass, typeAdapter);
     }
 

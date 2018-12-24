@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.ashlikun.mulittypegson.GsonHelper;
+import com.ashlikun.gson.GsonHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;

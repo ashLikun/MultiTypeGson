@@ -1,8 +1,8 @@
 package com.ashlikun.mulittypegson.simple;
 
+import com.ashlikun.gson.GsonHelper;
 import com.ashlikun.mulittypegson.BaseMultiData;
 import com.ashlikun.mulittypegson.BaseMultiParentData;
-import com.ashlikun.mulittypegson.GsonHelper;
 
 import java.lang.reflect.Type;
 import java.util.List;
