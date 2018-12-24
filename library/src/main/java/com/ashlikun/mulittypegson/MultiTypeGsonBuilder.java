@@ -1,6 +1,5 @@
 package com.ashlikun.mulittypegson;
 
-import com.ashlikun.gson.GsonHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -25,12 +24,14 @@ public class MultiTypeGsonBuilder {
      * 内部解析json
      */
     protected Gson parseGson;
+    protected GsonBuilder initGsonBuilder;
     /**
      * 是否强制使用目标类上一层的type对应的value，因为存在目标类和上一层type对应的value不同
      */
     protected boolean forceUseParentValue = true;
 
-    public MultiTypeGsonBuilder() {
+    public MultiTypeGsonBuilder(GsonBuilder initGsonBuilder) {
+        this.initGsonBuilder = initGsonBuilder;
     }
 
     /**
@@ -95,7 +96,7 @@ public class MultiTypeGsonBuilder {
      */
     public GsonBuilder build() {
         buildCheck();
-        GsonBuilder gsonBuilder = GsonHelper.getBuilder();
+        GsonBuilder gsonBuilder = initGsonBuilder;
         gsonBuilder.registerTypeAdapter(targetClass, typeAdapter);
         if (targetParentClass != null) {
             gsonBuilder.registerTypeAdapter(targetParentClass, new TargetParentDeserializer(this, targetParentClass, typeAdapter));
@@ -109,7 +110,7 @@ public class MultiTypeGsonBuilder {
      */
     public GsonBuilder buildTager() {
         buildCheck();
-        return GsonHelper.getBuilder()
+        return initGsonBuilder
                 .registerTypeAdapter(targetClass, typeAdapter);
     }
 

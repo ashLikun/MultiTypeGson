@@ -61,6 +61,16 @@ public class GsonHelper {
      * @return
      */
     public static MultiTypeGsonBuilder getMultiTypeGsonBuilder() {
-        return new MultiTypeGsonBuilder();
+        return new MultiTypeGsonBuilder(getBuilder());
+    }
+
+    /**
+     * 获取解析多种格式的gson
+     * 不处理String为null的情况
+     *
+     * @return
+     */
+    public static MultiTypeGsonBuilder getMultiTypeGsonBuilderStrNull() {
+        return new MultiTypeGsonBuilder(getBuilderStrNull());
     }
 }
