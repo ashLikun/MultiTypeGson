@@ -28,6 +28,37 @@ public class GsonHelper {
         return new GsonBuilder()
                 .registerTypeAdapter(int.class, new JsonTypeAdapter.IntegerTypeAdapter())
                 .registerTypeAdapter(long.class, new JsonTypeAdapter.LongTypeAdapter())
+                .registerTypeAdapter(String.class, new JsonTypeAdapter.StringTypeAdapter())
+                .registerTypeAdapter(float.class, new JsonTypeAdapter.FloatTypeAdapter())
+                .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())
+                .registerTypeAdapter(short.class, new JsonTypeAdapter.ShortTypeAdapter())
+
+                .serializeNulls();
+    }
+
+    /**
+     * 获取解析多种格式的gson
+     *
+     * @return
+     */
+    public static MultiTypeGsonBuilder getMultiType() {
+        return new MultiTypeGsonBuilder(getBuilder());
+    }
+
+    /**
+     * 处理String为null的情况,返回""
+     */
+    public static Gson getGsonNotNull() {
+        return getBuilderNotNull().create();
+    }
+
+    /**
+     * 处理String为null的情况,返回""
+     */
+    public static GsonBuilder getBuilderNotNull() {
+        return new GsonBuilder()
+                .registerTypeAdapter(int.class, new JsonTypeAdapter.IntegerTypeAdapter())
+                .registerTypeAdapter(long.class, new JsonTypeAdapter.LongTypeAdapter())
                 .registerTypeAdapter(float.class, new JsonTypeAdapter.FloatTypeAdapter())
                 .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())
                 .registerTypeAdapter(short.class, new JsonTypeAdapter.ShortTypeAdapter())
@@ -36,41 +67,12 @@ public class GsonHelper {
     }
 
     /**
-     * 不处理String为null的情况
-     *
-     * @return
-     */
-    public static Gson getGsonStrNull() {
-        return getBuilderStrNull().create();
-    }
-
-    public static GsonBuilder getBuilderStrNull() {
-        return new GsonBuilder()
-                .registerTypeAdapter(int.class, new JsonTypeAdapter.IntegerTypeAdapter())
-                .registerTypeAdapter(long.class, new JsonTypeAdapter.LongTypeAdapter())
-                .registerTypeAdapter(String.class, new JsonTypeAdapter.StringTypeAdapter())
-                .registerTypeAdapter(float.class, new JsonTypeAdapter.FloatTypeAdapter())
-                .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())
-                .registerTypeAdapter(short.class, new JsonTypeAdapter.ShortTypeAdapter())
-                .serializeNulls();
-    }
-
-    /**
      * 获取解析多种格式的gson
+     * 处理String为null的情况,返回""
      *
      * @return
      */
-    public static MultiTypeGsonBuilder getMultiTypeGsonBuilder() {
-        return new MultiTypeGsonBuilder(getBuilder());
-    }
-
-    /**
-     * 获取解析多种格式的gson
-     * 不处理String为null的情况
-     *
-     * @return
-     */
-    public static MultiTypeGsonBuilder getMultiTypeGsonBuilderStrNull() {
-        return new MultiTypeGsonBuilder(getBuilderStrNull());
+    public static MultiTypeGsonBuilder getMultiTypeNotNull() {
+        return new MultiTypeGsonBuilder(getBuilderNotNull());
     }
 }
