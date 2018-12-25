@@ -48,6 +48,8 @@ public class JsonTypeAdapter {
                 String value = json.getAsJsonPrimitive().getAsString();
                 if (value == null || TextUtils.equals(value.toUpperCase(), "NULL")) {
                     return null;
+                } else if (value.length() == 0) {
+                    return StringNullAdapter.NULL;
                 } else {
                     return value;
                 }
@@ -55,7 +57,6 @@ public class JsonTypeAdapter {
                 return null;
             }
         }
-
     }
 
     public static class LongTypeAdapter implements JsonDeserializer<Long> {

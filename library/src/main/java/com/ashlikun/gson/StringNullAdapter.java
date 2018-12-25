@@ -31,7 +31,8 @@ public class StringNullAdapter extends TypeAdapter<String> {
     public String read(JsonReader reader) throws IOException {
         try {
             JsonElement value = Streams.parse(reader);
-            if (value.isJsonNull() || TextUtils.equals(value.getAsString().toUpperCase(), "NULL")) {
+            if (value.isJsonNull() || TextUtils.isEmpty(value.getAsString())
+                    || TextUtils.equals(value.getAsString().toUpperCase(), "NULL")) {
                 return NULL;
             }
             return value.getAsString();
