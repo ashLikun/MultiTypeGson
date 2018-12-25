@@ -22,7 +22,7 @@ import java.io.IOException;
  * 保证json的String不会返回null
  */
 public class StringNullAdapter extends TypeAdapter<String> {
-    public static  String NULL = "";
+    public static String NULL = "";
 
     /**
      * json 转对象  反序列化
@@ -34,7 +34,7 @@ public class StringNullAdapter extends TypeAdapter<String> {
             if (value.isJsonNull() || TextUtils.equals(value.getAsString().toUpperCase(), "NULL")) {
                 return NULL;
             }
-            return reader.nextString();
+            return value.getAsString();
         } catch (Exception e) {
             return NULL;
         }
