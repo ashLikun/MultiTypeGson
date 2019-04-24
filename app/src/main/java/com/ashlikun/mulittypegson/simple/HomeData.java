@@ -158,7 +158,7 @@ public class HomeData {
     }
 
     public <T> T parse(String json, Type type) {
-        return GsonHelper.getMultiTypeGsonBuilder()
+        return GsonHelper.getMultiType()
                 //指定要解析的字段名称
                 .registerTypeElementName("type")
                 //注册外部解析类
