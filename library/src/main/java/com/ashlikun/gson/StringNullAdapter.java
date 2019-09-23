@@ -2,6 +2,8 @@ package com.ashlikun.gson;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
@@ -22,7 +24,8 @@ import java.io.IOException;
  * 保证json的String不会返回null
  */
 public class StringNullAdapter extends TypeAdapter<String> {
-    public static String NULL = "";
+    @NonNull
+    public final static String NULL = "";
 
     /**
      * json 转对象  反序列化
