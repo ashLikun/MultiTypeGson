@@ -1,9 +1,11 @@
 package com.ashlikun.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.InstanceCreator;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.internal.ConstructorConstructor;
+import com.google.gson.internal.ObjectConstructor;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -11,6 +13,7 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,11 +28,12 @@ class MapTypeAdapter extends TypeAdapter<Object> {
     Gson gson;
     //MapTypeAdapterFactory  Gson的真实
     TypeAdapter adapter;
+    ObjectConstructor<? extends Map> objectConstructor;
 
-
-    public <T> MapTypeAdapter(Gson gson, TypeAdapter<T> delegateAdapter) {
+    public MapTypeAdapter(Gson gson, TypeAdapter delegateAdapter, ObjectConstructor<? extends Map> tObjectConstructor) {
         this.gson = gson;
         adapter = delegateAdapter;
+        objectConstructor = tObjectConstructor;
     }
 
     @Override
@@ -40,7 +44,7 @@ class MapTypeAdapter extends TypeAdapter<Object> {
                 return gson.getAdapter(List.class).read(in);
 
             case BEGIN_OBJECT:
-                Map<String, Object> map = new LinkedTreeMap<String, Object>();
+                Map<String, Object> map = objectConstructor.construct();
                 in.beginObject();
                 while (in.hasNext()) {
                     map.put(in.nextName(), read(in));
@@ -92,7 +96,8 @@ class MapTypeAdapter extends TypeAdapter<Object> {
                 return null;
             }
             //匹配成功
-            return (TypeAdapter<T>) new MapTypeAdapter(gson, gson.getDelegateAdapter(this, typeToken));
+            ConstructorConstructor constructorConstructor = new ConstructorConstructor(new HashMap<Type, InstanceCreator<?>>());
+            return (TypeAdapter<T>) new MapTypeAdapter(gson, gson.getDelegateAdapter(this, typeToken), constructorConstructor.get((TypeToken<Map>) typeToken));
         }
     }
 

@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     String json;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         map.put("ccc", true);
         String aaa = GsonHelper.getBuilderNotNull().create().toJson(map);
         Log.e("aaaa", aaa);
-        Map<String, Object> aMap = GsonHelper.getBuilderNotNull().create().fromJson(aaa, new TypeToken<Map<String, Object>>() {
+        HashMap<String, Object> aMap = GsonHelper.getBuilderNotNull().create().fromJson(aaa, new TypeToken<HashMap<String, Object>>() {
         }.getType());
         if(aMap != null) {
             Log.e("aaaa  222 ", aMap.toString());
