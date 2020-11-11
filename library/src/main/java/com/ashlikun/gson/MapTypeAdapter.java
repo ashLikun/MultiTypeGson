@@ -2,9 +2,11 @@ package com.ashlikun.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.InstanceCreator;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.ConstructorConstructor;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.internal.ObjectConstructor;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -13,6 +15,7 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,7 @@ import java.util.Map;
  * 邮箱　　：496546144@qq.com
  * <p>
  * 功能介绍：对象
+ * {@link com.google.gson.internal.bind.MapTypeAdapterFactory}
  */
 class MapTypeAdapter extends TypeAdapter<Object> {
     Gson gson;
@@ -39,15 +43,46 @@ class MapTypeAdapter extends TypeAdapter<Object> {
     @Override
     public Object read(JsonReader in) throws IOException {
         JsonToken token = in.peek();
+        Map map = objectConstructor.construct();
+        if (token == JsonToken.BEGIN_ARRAY) {
+            in.beginArray();
+            while (in.hasNext()) {
+                in.beginArray(); // entry array
+                Object key = in.nextName();
+                Object replaced = map.put(key, readObj(in));
+                if (replaced != null) {
+                    throw new JsonSyntaxException("duplicate key: " + key);
+                }
+                in.endArray();
+            }
+            in.endArray();
+        } else {
+            in.beginObject();
+            while (in.hasNext()) {
+                map.put(in.nextName(), readObj(in));
+            }
+            in.endObject();
+        }
+        return map;
+    }
+
+    public Object readObj(JsonReader in) throws IOException {
+        JsonToken token = in.peek();
         switch (token) {
             case BEGIN_ARRAY:
-                return gson.getAdapter(List.class).read(in);
+                List<Object> list = new ArrayList<Object>();
+                in.beginArray();
+                while (in.hasNext()) {
+                    list.add(readObj(in));
+                }
+                in.endArray();
+                return list;
 
             case BEGIN_OBJECT:
-                Map<String, Object> map = objectConstructor.construct();
+                Map<String, Object> map = new LinkedTreeMap<String, Object>();
                 in.beginObject();
                 while (in.hasNext()) {
-                    map.put(in.nextName(), read(in));
+                    map.put(in.nextName(), readObj(in));
                 }
                 in.endObject();
                 return map;
