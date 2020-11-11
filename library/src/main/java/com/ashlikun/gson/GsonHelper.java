@@ -32,7 +32,23 @@ public class GsonHelper {
                 .registerTypeAdapter(float.class, new JsonTypeAdapter.FloatTypeAdapter())
                 .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())
                 .registerTypeAdapter(short.class, new JsonTypeAdapter.ShortTypeAdapter())
+                .registerTypeAdapterFactory(MapTypeAdapter.newFactory())
+                .serializeNulls();
+    }
 
+    /**
+     * 处理String为null的情况,返回""
+     * 处理List为null或者解析异常的情况,返回Collections.emptyList()
+     */
+    public static GsonBuilder getBuilderNotNull() {
+        return new GsonBuilder()
+                .registerTypeAdapter(int.class, new JsonTypeAdapter.IntegerTypeAdapter())
+                .registerTypeAdapter(long.class, new JsonTypeAdapter.LongTypeAdapter())
+                .registerTypeAdapter(float.class, new JsonTypeAdapter.FloatTypeAdapter())
+                .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())
+                .registerTypeAdapter(short.class, new JsonTypeAdapter.ShortTypeAdapter())
+                .registerTypeAdapterFactory(StringNullAdapter.newFactory())
+                .registerTypeAdapterFactory(MapTypeAdapter.newFactory())
                 .serializeNulls();
     }
 
@@ -52,19 +68,6 @@ public class GsonHelper {
         return getBuilderNotNull().create();
     }
 
-    /**
-     * 处理String为null的情况,返回""
-     */
-    public static GsonBuilder getBuilderNotNull() {
-        return new GsonBuilder()
-                .registerTypeAdapter(int.class, new JsonTypeAdapter.IntegerTypeAdapter())
-                .registerTypeAdapter(long.class, new JsonTypeAdapter.LongTypeAdapter())
-                .registerTypeAdapter(float.class, new JsonTypeAdapter.FloatTypeAdapter())
-                .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())
-                .registerTypeAdapter(short.class, new JsonTypeAdapter.ShortTypeAdapter())
-                .registerTypeAdapterFactory(StringNullAdapter.newFactory())
-                .serializeNulls();
-    }
 
     /**
      * 获取解析多种格式的gson

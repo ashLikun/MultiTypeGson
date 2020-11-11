@@ -5,14 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ashlikun.gson.GsonHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     String json;
@@ -43,6 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onButtonClick(View view) {
         JsonData data = GsonHelper.getGson().fromJson(json, JsonData.class);
-        Log.e("aaa", "");
+        Log.e("aaa", data.toString());
     }
 }
