@@ -32,7 +32,7 @@ public class GsonHelper {
                 .registerTypeAdapter(float.class, new JsonTypeAdapter.FloatTypeAdapter())
                 .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())
                 .registerTypeAdapter(short.class, new JsonTypeAdapter.ShortTypeAdapter())
-                .registerTypeAdapterFactory(MapTypeAdapter.newFactory())
+                .registerTypeAdapterFactory(new MapTypeAdapterFactoryX(false))
                 .serializeNulls();
     }
 
@@ -48,7 +48,7 @@ public class GsonHelper {
                 .registerTypeAdapter(double.class, new JsonTypeAdapter.DoubleTypeAdapter())
                 .registerTypeAdapter(short.class, new JsonTypeAdapter.ShortTypeAdapter())
                 .registerTypeAdapterFactory(StringNullAdapter.newFactory())
-                .registerTypeAdapterFactory(MapTypeAdapter.newFactory())
+                .registerTypeAdapterFactory(new MapTypeAdapterFactoryX(false))
                 .serializeNulls();
     }
 
