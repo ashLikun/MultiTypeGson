@@ -99,7 +99,7 @@ class MapTypeAdapter extends TypeAdapter<Object> {
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
             Class<T> rawType = (Class<T>) type.getRawType();
-            if (rawType != String.class) {
+            if (rawType != Map.class) {
                 return null;
             }
             //匹配成功
