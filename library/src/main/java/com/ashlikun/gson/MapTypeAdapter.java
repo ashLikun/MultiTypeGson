@@ -10,22 +10,26 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 作者　　: 李坤
- * 创建时间: 2020/11/11　14:28
+ * 创建时间: 2020/11/11　15:52
  * 邮箱　　：496546144@qq.com
  * <p>
- * 功能介绍：Map<String,Object></>
+ * 功能介绍：对象
  */
 class MapTypeAdapter extends TypeAdapter<Object> {
     Gson gson;
+    //MapTypeAdapterFactory  Gson的真实
+    TypeAdapter adapter;
 
-    public MapTypeAdapter(Gson gson) {
+
+    public <T> MapTypeAdapter(Gson gson, TypeAdapter<T> delegateAdapter) {
         this.gson = gson;
+        adapter = delegateAdapter;
     }
 
     @Override
@@ -33,13 +37,7 @@ class MapTypeAdapter extends TypeAdapter<Object> {
         JsonToken token = in.peek();
         switch (token) {
             case BEGIN_ARRAY:
-                List<Object> list = new ArrayList<Object>();
-                in.beginArray();
-                while (in.hasNext()) {
-                    list.add(read(in));
-                }
-                in.endArray();
-                return list;
+                return gson.getAdapter(List.class).read(in);
 
             case BEGIN_OBJECT:
                 Map<String, Object> map = new LinkedTreeMap<String, Object>();
@@ -51,35 +49,31 @@ class MapTypeAdapter extends TypeAdapter<Object> {
                 return map;
 
             case STRING:
-                return in.nextString();
-            case NUMBER:
-                /**
-                 * 改写数字的处理逻辑，将数字值分为整型与浮点型。
-                 */
-                double dbNum = in.nextInt();
+                return gson.getAdapter(String.class).read(in);
 
-                // 数字超过long的最大值，返回浮点类型
+            case NUMBER:
+                //改写数字的处理逻辑，将数字值分为整型与浮点型。
+                double dbNum = in.nextDouble();
+                // 数字超过long的最大值，返回Double
                 if (dbNum > Long.MAX_VALUE) {
                     return dbNum;
                 }
                 // 判断数字是否为整数值
                 long lngNum = (long) dbNum;
                 if (dbNum == lngNum) {
-                    try {
+                    // 数字未超过Int的最大值，返回Int
+                    if (lngNum <= Integer.MAX_VALUE) {
                         return (int) lngNum;
-                    } catch (Exception e) {
-                        return lngNum;
                     }
+                    return lngNum;
                 } else {
                     return dbNum;
                 }
             case BOOLEAN:
-                return in.nextBoolean();
-
+                return gson.getAdapter(Boolean.class).read(in);
             case NULL:
                 in.nextNull();
                 return null;
-
             default:
                 throw new IllegalStateException();
         }
@@ -87,30 +81,25 @@ class MapTypeAdapter extends TypeAdapter<Object> {
 
     @Override
     public void write(JsonWriter out, Object value) throws IOException {
-        if (value == null) {
-            out.nullValue();
-            return;
-        }
-        TypeAdapter<Object> typeAdapter = (TypeAdapter<Object>) gson.getAdapter(value.getClass());
-        typeAdapter.write(out, value);
+        adapter.write(out, value);
     }
 
     private static class MapAdapterFactory implements TypeAdapterFactory {
         @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            Class<T> rawType = (Class<T>) type.getRawType();
-            if (rawType != Map.class) {
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+            Class<? super T> rawType = typeToken.getRawType();
+            if (!Map.class.isAssignableFrom(rawType)) {
                 return null;
             }
             //匹配成功
-            return (TypeAdapter<T>) new MapTypeAdapter(gson);
+            return (TypeAdapter<T>) new MapTypeAdapter(gson, gson.getDelegateAdapter(this, typeToken));
         }
     }
 
     /**
      * Returns a new factory that will match each type against {@code exactType}.
      */
-    public static TypeAdapterFactory newFactory() {
+    public static MapAdapterFactory newFactory() {
         return new MapTypeAdapter.MapAdapterFactory();
     }
 }

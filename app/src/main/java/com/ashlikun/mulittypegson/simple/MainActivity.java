@@ -8,11 +8,14 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ashlikun.gson.GsonHelper;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     String json;
@@ -22,6 +25,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         json = getJson(this);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("aaa", "aaaaaaaa");
+        map.put("bbb", 111);
+        map.put("ccc", true);
+        String aaa = GsonHelper.getBuilderNotNull().create().toJson(map);
+        Log.e("aaaa", aaa);
+        Map<String, Object> aMap = GsonHelper.getBuilderNotNull().create().fromJson(aaa, new TypeToken<Map<String, Object>>() {
+        }.getType());
+        if(aMap != null) {
+            Log.e("aaaa  222 ", aMap.toString());
+        }
     }
 
     public static String getJson(Context context) {
