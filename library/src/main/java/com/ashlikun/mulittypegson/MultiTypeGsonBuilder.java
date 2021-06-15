@@ -1,11 +1,13 @@
 package com.ashlikun.mulittypegson;
 
+import com.ashlikun.gson.GsonHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 作者　　: 李坤
@@ -13,6 +15,13 @@ import java.util.HashMap;
  * 邮箱　　：496546144@qq.com
  * <p>
  * 功能介绍：根据type不同解析不同的json
+ * GsonHelper.getMultiTypeNotNull().registerTypeElementName("type")
+ * .registerTargetParentClass(MainData::class.java)
+ * .registerTypeElementClass("banner", BannerData::class.java)
+ * .registerTypeElementClass("menus", MainIconData::class.java)
+ * .registerTypeElementClass("community", MainIconData::class.java)
+ * .registerTypeElementClass("notice", NewsListData::class.java)
+ * .build().create(), json, type)
  */
 public class MultiTypeGsonBuilder {
     protected HashMap<String, Type> typeClassMap = new HashMap<>();
@@ -32,6 +41,16 @@ public class MultiTypeGsonBuilder {
 
     public MultiTypeGsonBuilder(GsonBuilder initGsonBuilder) {
         this.initGsonBuilder = initGsonBuilder;
+    }
+
+    /**
+     * 自动把全局的类型注册
+     */
+    public MultiTypeGsonBuilder autoRegisterType() {
+        for (Map.Entry<String,Type> entry : GsonHelper.multiTypeClassMap.entrySet()) {
+            registerTypeElementClass(entry.getKey(), entry.getValue());
+        }
+        return this;
     }
 
     /**
@@ -118,7 +137,9 @@ public class MultiTypeGsonBuilder {
         return jsonElement.isJsonNull() ? "" : jsonElement.getAsString();
     }
 
-    // 这个值是否注册过
+    /**
+     * 这个值是否注册过
+     */
     protected boolean checkHasRegistered(String typeValue) {
         return typeClassMap.containsKey(typeValue);
     }

@@ -4,6 +4,9 @@ import com.ashlikun.mulittypegson.MultiTypeGsonBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
+
 /**
  * @author　　: 李坤
  * 创建时间: 2018/12/24 17:15
@@ -19,6 +22,10 @@ import com.google.gson.GsonBuilder;
 
 
 public class GsonHelper {
+    /**
+     * MultiTypeGson对应的数据类型
+     */
+    public static HashMap<String, Type> multiTypeClassMap = new HashMap<>();
 
     public static Gson getGson() {
         return getBuilder().create();
@@ -72,10 +79,9 @@ public class GsonHelper {
     /**
      * 获取解析多种格式的gson
      * 处理String为null的情况,返回""
-     *
-     * @return
      */
     public static MultiTypeGsonBuilder getMultiTypeNotNull() {
         return new MultiTypeGsonBuilder(getBuilderNotNull());
     }
+
 }
