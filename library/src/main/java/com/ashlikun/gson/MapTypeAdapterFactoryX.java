@@ -43,6 +43,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 重写google的MapTypeAdapterFactory
+ * 生层次自定义
+ * 解决Number问题
+ */
+
+/**
  * {@link com.google.gson.internal.bind.MapTypeAdapterFactory}
  */
 public class MapTypeAdapterFactoryX implements TypeAdapterFactory {

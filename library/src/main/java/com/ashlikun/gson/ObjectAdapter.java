@@ -71,22 +71,20 @@ class ObjectAdapter extends TypeAdapter<Object> {
 
             case NUMBER:
                 //改写数字的处理逻辑，将数字值分为整型与浮点型。
-                double dbNum = in.nextDouble();
-                // 数字超过long的最大值，返回Double
-                if (dbNum > Long.MAX_VALUE) {
-                    return dbNum;
-                }
-                // 判断数字是否为整数值
-                long lngNum = (long) dbNum;
-                if (dbNum == lngNum) {
+                String numStr = in.nextString();
+                try {
+                    long lngNum = Long.parseLong(numStr);
                     // 数字未超过Int的最大值，返回Int
                     if (lngNum <= Integer.MAX_VALUE) {
                         return (int) lngNum;
                     }
+                    //返回long
                     return lngNum;
-                } else {
-                    return dbNum;
+                } catch (Exception e) {
+                    //返回double
                 }
+                //返回double
+                return Double.parseDouble(numStr);
             case BOOLEAN:
                 return gson.getAdapter(Boolean.class).read(in);
             case NULL:
