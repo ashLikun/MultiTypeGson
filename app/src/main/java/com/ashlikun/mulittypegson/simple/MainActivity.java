@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        long aaas = 1519598506757865474L;
-//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 //        json = getJson(this, "json2.json");
 //        HashMap<String, Object> map = new HashMap<>();
 //        map.put("aaa", "aaaaaaaa");
