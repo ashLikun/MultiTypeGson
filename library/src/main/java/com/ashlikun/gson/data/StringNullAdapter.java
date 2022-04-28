@@ -1,15 +1,12 @@
-package com.ashlikun.gson;
+package com.ashlikun.gson.data;
 
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
-import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.Streams;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -31,7 +28,7 @@ public class StringNullAdapter extends TypeAdapter<String> {
      * json 转对象  反序列化
      */
     @Override
-    public String read(JsonReader reader) throws IOException {
+    public String read(JsonReader reader) {
         try {
             JsonElement value = Streams.parse(reader);
             if (value.isJsonNull() || TextUtils.isEmpty(value.getAsString())
@@ -54,24 +51,5 @@ public class StringNullAdapter extends TypeAdapter<String> {
             return;
         }
         writer.value(value);
-    }
-
-    private static class NullStringToEmptyAdapterFactory implements TypeAdapterFactory {
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            Class<T> rawType = (Class<T>) type.getRawType();
-            if (rawType != String.class) {
-                return null;
-            }
-            //匹配成功
-            return (TypeAdapter<T>) new StringNullAdapter();
-        }
-    }
-
-    /**
-     * Returns a new factory that will match each type against {@code exactType}.
-     */
-    public static TypeAdapterFactory newFactory() {
-        return new NullStringToEmptyAdapterFactory();
     }
 }

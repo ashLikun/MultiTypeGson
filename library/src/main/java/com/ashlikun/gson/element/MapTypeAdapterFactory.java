@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.ashlikun.gson;
+package com.ashlikun.gson.element;
 
 import com.google.gson.Gson;
-import com.google.gson.InstanceCreator;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
@@ -38,19 +37,25 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * {@link com.google.gson.internal.bind.MapTypeAdapterFactory}
+ * @author　　: 李坤
+ * 创建时间: 2022/4/28 23:14
+ * 邮箱　　：496546144@qq.com
+ * <p>
+ * 功能介绍： 重写google的MapTypeAdapterFactory  解析Map使用
+ * * 生层次自定义
+ * * 解决Number问题
+ * 参考  {@link com.google.gson.internal.bind.MapTypeAdapterFactory}
  */
-public class MapTypeAdapterFactoryX implements TypeAdapterFactory {
+public class MapTypeAdapterFactory implements TypeAdapterFactory {
     private final ConstructorConstructor constructorConstructor;
     final boolean complexMapKeySerialization;
 
-    public MapTypeAdapterFactoryX( boolean complexMapKeySerialization) {
-        this.constructorConstructor =  new ConstructorConstructor(new HashMap<Type, InstanceCreator<?>>());
+    public MapTypeAdapterFactory(ConstructorConstructor constructorConstructor, boolean complexMapKeySerialization) {
+        this.constructorConstructor = constructorConstructor;
         this.complexMapKeySerialization = complexMapKeySerialization;
     }
 
@@ -71,7 +76,7 @@ public class MapTypeAdapterFactoryX implements TypeAdapterFactory {
 
         @SuppressWarnings({"unchecked", "rawtypes"})
         // we don't define a type parameter for the key or value types
-                TypeAdapter<T> result = new Adapter(gson, keyAndValueTypes[0], keyAdapter,
+        TypeAdapter<T> result = new Adapter(gson, keyAndValueTypes[0], keyAdapter,
                 keyAndValueTypes[1], valueAdapter, constructor);
         return result;
     }

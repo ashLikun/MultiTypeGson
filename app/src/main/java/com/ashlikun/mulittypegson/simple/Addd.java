@@ -13,6 +13,8 @@ import java.util.Map;
 class Addd {
     String type = "";
     List<DataData> data;
+    float bool = 234;
+    String number = "";
 
     class DataData {
         JumpData jump;
