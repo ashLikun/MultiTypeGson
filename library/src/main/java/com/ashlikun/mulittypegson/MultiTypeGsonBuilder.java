@@ -13,6 +13,13 @@ import java.util.HashMap;
  * 邮箱　　：496546144@qq.com
  * <p>
  * 功能介绍：根据type不同解析不同的json
+ *                  GsonHelper.getMultiTypeNotNull().registerTypeElementName("type")
+ *                 .registerTargetParentClass(MainData::class.java)
+ *                 .registerTypeElementClass("banner", BannerData::class.java)
+ *                 .registerTypeElementClass("menus", MainIconData::class.java)
+ *                 .registerTypeElementClass("community", MainIconData::class.java)
+ *                 .registerTypeElementClass("notice", NewsListData::class.java)
+ *                 .build().create(), json, type)
  */
 public class MultiTypeGsonBuilder {
     protected HashMap<String, Type> typeClassMap = new HashMap<>();
