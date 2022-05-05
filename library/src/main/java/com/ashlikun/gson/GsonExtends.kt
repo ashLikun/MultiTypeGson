@@ -10,9 +10,11 @@ import java.lang.reflect.Type
  *
  * 功能介绍：
  */
-inline fun Any.toJson() = GsonHelper.getGsonNotNull().toJson(this)
-inline fun Any.toJsonOrNull() = GsonHelper.getGson().toJson(this)
+inline fun Any?.toJson() = GsonHelper.getGsonNotNull().toJson(this)
+inline fun Any?.toJsonOrNull() = GsonHelper.getGson().toJson(this)
 
 @Throws(JsonSyntaxException::class)
-fun <T> String.fromJson(typeOfT: Type) = GsonHelper.getGsonNotNull().fromJson<T>(this, typeOfT)
-fun <T> String.fromJsonOrNull(typeOfT: Type) = GsonHelper.getGson().fromJson<T>(this, typeOfT)
+inline fun <T> String.fromJson(typeOfT: Type) = GsonHelper.getGsonNotNull().fromJson<T>(this, typeOfT)
+
+@Throws(JsonSyntaxException::class)
+inline fun <T> String.fromJsonOrNull(typeOfT: Type) = GsonHelper.getGson().fromJson<T>(this, typeOfT)
