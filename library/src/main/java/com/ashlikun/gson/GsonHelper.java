@@ -10,16 +10,10 @@ import com.ashlikun.gson.data.JSONObjectTypeAdapter;
 import com.ashlikun.gson.data.LongTypeAdapter;
 import com.ashlikun.gson.data.StringNullAdapter;
 import com.ashlikun.gson.data.StringTypeAdapter;
-import com.ashlikun.gson.element.CollectionTypeAdapterFactory;
-import com.ashlikun.gson.element.MapTypeAdapterFactory;
-import com.ashlikun.gson.element.ReflectiveTypeAdapterFactory;
 import com.ashlikun.mulittypegson.MultiTypeGsonBuilder;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
-import com.google.gson.internal.ConstructorConstructor;
-import com.google.gson.internal.Excluder;
 import com.google.gson.internal.bind.TypeAdapters;
 
 import org.json.JSONArray;
@@ -60,7 +54,7 @@ import java.util.HashMap;
 
 public class GsonHelper {
     private static JsonCallback jsonCallback;
-    private static final HashMap<Type, InstanceCreator<?>> INSTANCE_CREATORS = new HashMap<>(0);
+    public static final HashMap<Type, InstanceCreator<?>> INSTANCE_CREATORS = new HashMap<>(0);
 
     public static JsonCallback getJsonCallback() {
         return jsonCallback;
@@ -86,12 +80,13 @@ public class GsonHelper {
     public static HashMap<String, Type> multiTypeClassMap = new HashMap<>();
 
     public static Gson getGson() {
-        return getBuilder().create();
+        return GsonExtendsKt.createX(getBuilder());
     }
 
     public static GsonBuilder getBuilder() {
-        ConstructorConstructor constructor = new ConstructorConstructor(INSTANCE_CREATORS);
         return new GsonBuilder()
+                //忽略字段
+                .setExclusionStrategies(new IgnoreExclusionStrategy())
                 //基本类型异常
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(boolean.class, Boolean.class, new BooleanTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter()))
@@ -99,14 +94,11 @@ public class GsonHelper {
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(float.class, Float.class, new FloatTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(double.class, Double.class, new DoubleTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(BigDecimal.class, new BigDecimalTypeAdapter()))
-                .registerTypeAdapterFactory(new CollectionTypeAdapterFactory(constructor))
-                .registerTypeAdapterFactory(new ReflectiveTypeAdapterFactory(constructor, FieldNamingPolicy.IDENTITY, Excluder.DEFAULT))
+
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(JSONObject.class, new JSONObjectTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(JSONArray.class, new JSONArrayTypeAdapter()))
                 //解析异常不抛出，但是会为null
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(String.class, new StringTypeAdapter()))
-                //Map类型解析的一些问题
-                .registerTypeAdapterFactory(new MapTypeAdapterFactory(constructor, false))
                 .serializeNulls();
     }
 
@@ -114,8 +106,9 @@ public class GsonHelper {
      * 处理String为null的情况,返回""
      */
     public static GsonBuilder getBuilderNotNull() {
-        ConstructorConstructor constructor = new ConstructorConstructor(INSTANCE_CREATORS);
         return new GsonBuilder()
+                //忽略字段
+                .setExclusionStrategies(new IgnoreExclusionStrategy())
                 //基本类型异常
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(boolean.class, Boolean.class, new BooleanTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter()))
@@ -123,13 +116,11 @@ public class GsonHelper {
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(float.class, Float.class, new FloatTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(double.class, Double.class, new DoubleTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(BigDecimal.class, new BigDecimalTypeAdapter()))
-                .registerTypeAdapterFactory(new CollectionTypeAdapterFactory(constructor))
-                .registerTypeAdapterFactory(new ReflectiveTypeAdapterFactory(constructor, FieldNamingPolicy.IDENTITY, Excluder.DEFAULT))
+
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(JSONObject.class, new JSONObjectTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(JSONArray.class, new JSONArrayTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(String.class, new StringNullAdapter()))
-                //Map类型解析的一些问题
-                .registerTypeAdapterFactory(new MapTypeAdapterFactory(constructor, false))
+
                 // 添加到自定义的类型解析适配器，因为在 GsonBuilder.create 方法中会对 List 进行反转，所以这里需要放到最后的位置上，这样就会优先解析
                 .serializeNulls();
     }
@@ -147,7 +138,7 @@ public class GsonHelper {
      * 处理String为null的情况,返回""
      */
     public static Gson getGsonNotNull() {
-        return getBuilderNotNull().create();
+        return GsonExtendsKt.createX(getBuilderNotNull());
     }
 
 

@@ -15,6 +15,7 @@ class Addd {
     List<DataData> data;
     float bool = 234;
     String number = "";
+    String devices$delegate = "";
 
     class DataData {
         JumpData jump;

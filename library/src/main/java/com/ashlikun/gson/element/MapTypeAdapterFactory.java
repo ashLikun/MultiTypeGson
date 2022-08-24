@@ -51,7 +51,7 @@ import java.util.Map;
  * 参考  {@link com.google.gson.internal.bind.MapTypeAdapterFactory}
  */
 public class MapTypeAdapterFactory implements TypeAdapterFactory {
-    private final ConstructorConstructor constructorConstructor;
+    public ConstructorConstructor constructorConstructor;
     final boolean complexMapKeySerialization;
 
     public MapTypeAdapterFactory(ConstructorConstructor constructorConstructor, boolean complexMapKeySerialization) {

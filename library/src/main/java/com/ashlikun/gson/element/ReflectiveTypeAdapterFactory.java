@@ -22,14 +22,14 @@ import java.util.Map;
  * @author　　: 李坤
  * 创建时间: 2022/4/28 22:53
  * 邮箱　　：496546144@qq.com
- *
+ * <p>
  * 功能介绍：Object 解析适配器，参考：{@link com.google.gson.internal.bind.ReflectiveTypeAdapterFactory}
  */
 public class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
 
-    private final ConstructorConstructor mConstructorConstructor;
-    private final FieldNamingStrategy mFieldNamingPolicy;
-    private final Excluder mExcluder;
+    public ConstructorConstructor mConstructorConstructor;
+    public FieldNamingStrategy mFieldNamingPolicy;
+    public Excluder mExcluder;
 
     public ReflectiveTypeAdapterFactory(ConstructorConstructor constructor,
                                         FieldNamingStrategy strategy, Excluder excluder) {
@@ -49,7 +49,7 @@ public class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
         // 判断是否是数组
         if (type.getType() instanceof GenericArrayType ||
                 type.getType() instanceof Class &&
-                 ((Class<?>) type.getType()).isArray()) {
+                        ((Class<?>) type.getType()).isArray()) {
             return null;
         }
         // 如果是基本数据类型

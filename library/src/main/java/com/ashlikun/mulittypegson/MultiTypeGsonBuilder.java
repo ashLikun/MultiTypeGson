@@ -1,5 +1,6 @@
 package com.ashlikun.mulittypegson;
 
+import com.ashlikun.gson.GsonExtendsKt;
 import com.ashlikun.gson.GsonHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -120,7 +121,7 @@ public class MultiTypeGsonBuilder {
         if (targetParentClass != null) {
             gsonBuilder.registerTypeAdapter(targetParentClass, new TargetParentDeserializer(this, targetParentClass, typeAdapter));
         }
-        parseGson = gsonBuilder.create();
+        parseGson = GsonExtendsKt.createX(gsonBuilder);
         return gsonBuilder;
     }
 

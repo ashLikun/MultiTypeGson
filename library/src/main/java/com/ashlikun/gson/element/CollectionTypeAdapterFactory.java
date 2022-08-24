@@ -16,12 +16,12 @@ import java.util.Collection;
  * @author　　: 李坤
  * 创建时间: 2022/4/28 22:52
  * 邮箱　　：496546144@qq.com
- *
+ * <p>
  * 功能介绍：Array 解析适配器，参考：{@link com.google.gson.internal.bind.CollectionTypeAdapterFactory}
  */
 public class CollectionTypeAdapterFactory implements TypeAdapterFactory {
 
-    private final ConstructorConstructor mConstructorConstructor;
+    public ConstructorConstructor mConstructorConstructor;
 
     public CollectionTypeAdapterFactory(ConstructorConstructor constructor) {
         mConstructorConstructor = constructor;
@@ -38,7 +38,7 @@ public class CollectionTypeAdapterFactory implements TypeAdapterFactory {
         }
         if (typeToken.getType() instanceof GenericArrayType ||
                 typeToken.getType() instanceof Class &&
-                ((Class<?>) typeToken.getType()).isArray()) {
+                        ((Class<?>) typeToken.getType()).isArray()) {
             return null;
         }
 
