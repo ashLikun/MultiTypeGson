@@ -42,9 +42,7 @@ inline fun GsonBuilder.createX(): Gson {
         //Map类型解析的一些问题
         registerTypeAdapterFactory(mapTypeAdapterFactory)
     }.create().apply {
-        val constructor =
-            (GsonExtends.getFieldValue(this, "constructorConstructor") as? ConstructorConstructor)
-                ?: ConstructorConstructor(GsonHelper.INSTANCE_CREATORS)
+        val constructor = (GsonExtends.getFieldValue(this, "constructorConstructor") as ConstructorConstructor)
         //从新赋值一些属性
         collectionTypeAdapterFactory.mConstructorConstructor = constructor
         reflectiveTypeAdapterFactory.mConstructorConstructor = constructor
